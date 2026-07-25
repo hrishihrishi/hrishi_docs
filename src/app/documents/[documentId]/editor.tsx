@@ -5,6 +5,7 @@ import TaskItem from '@tiptap/extension-task-item'
 import TaskList from '@tiptap/extension-task-list'
 import Table from '@tiptap/extension-table'
 import Image from '@tiptap/extension-image'
+import TextAlign from '@tiptap/extension-text-align'
 import Link from '@tiptap/extension-link'
 import { Color } from '@tiptap/extension-color'
 import Highlight from "@tiptap/extension-highlight"
@@ -18,11 +19,16 @@ import TableRow from '@tiptap/extension-table-row'
 import { useEditor, EditorContent } from '@tiptap/react'
 
 import { useEditorStore } from '@/store/use-editor-store';
+import { FontSizeExtension } from '@/extensions/font-size';
+import { LineHeightExtension } from '@/extensions/line-height';
+
+import { Ruler } from './ruler';
 
 export const Editor = () => {
   const { setEditor } = useEditorStore();
 
   const editor = useEditor({
+    immediatelyRender: false,
     onCreate({ editor }) {
       setEditor(editor);
     },
@@ -55,6 +61,11 @@ export const Editor = () => {
     },
     extensions: [
       StarterKit,
+      LineHeightExtension,
+      FontSizeExtension,
+      TextAlign.configure({
+        types: ["heading", "paragraph"]
+      }),
       Link.configure({
         openOnClick: false,
         autolink: true,
@@ -98,6 +109,7 @@ export const Editor = () => {
 
   return (
     <div className="size-full overflow-x-auto bg-[#F9FBFD] px-4 print:p-0 print:bg-white print:overflow-visible">
+      <Ruler />
       <div className="min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0">
         <EditorContent editor={editor} />
       </div>
