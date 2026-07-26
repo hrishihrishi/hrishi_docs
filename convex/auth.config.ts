@@ -1,10 +1,7 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 export default {
   providers: [
     {
-      domain: process.env.CLERK_JWT_ISSUER_DOMAIN,
+      domain: "https://equipped-kid-12.clerk.accounts.dev",
       applicationID: "convex",
     }
   ]
