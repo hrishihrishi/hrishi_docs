@@ -1,3 +1,7 @@
+## Run Instructions
+- Run convex server
+- Run npm run dev
+
 ## Summary of all Implementations:
 1. Enabled OrBAC in Clerk
 2. Implemented resitrictions in code level
@@ -13,3 +17,6 @@
 - Issuer key is connected to Convex (Database)
 - OrBAC is setup in CLerk
 - Deletion is restricted under OrBAC feature
+
+## Liveblocks
+- add LIVEBLOCKS_SECRET_KEY
