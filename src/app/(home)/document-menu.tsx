@@ -18,6 +18,11 @@ interface DocumentMenuProps {
   onNewTab: (id: Id<"documents">) => void;
 };
 
+/**
+ * Three-dot context menu for a document row.
+ * Rename and Remove dialogs call e.stopPropagation() so the parent row's
+ * click-to-navigate handler doesn't fire when the dialog opens.
+ */
 export const DocumentMenu = ({ documentId, title, onNewTab }: DocumentMenuProps) => {
   return (
     <DropdownMenu>

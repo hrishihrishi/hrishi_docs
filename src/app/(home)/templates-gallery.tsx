@@ -17,6 +17,11 @@ import { templates } from "@/constants/templates";
 
 import { api } from "../../../convex/_generated/api";
 
+/**
+ * Horizontally scrollable carousel of document templates.
+ * Clicking a template creates a new document via Convex and immediately navigates
+ * to the editor, so `isCreating` disables the entire carousel during the mutation.
+ */
 export const TemplatesGallery = () => {
   const router = useRouter();
   const create = useMutation(api.documents.create);
@@ -54,8 +59,7 @@ export const TemplatesGallery = () => {
                 >
                   <button
                     disabled={isCreating}
-                    // TODO: Add proper initial content
-                    onClick={() => onTemplateClick(template.label, "")}
+                    onClick={() => onTemplateClick(template.label, template.initialContent)}
                     style={{
                       backgroundImage: `url(${template.imageUrl})`,
                       backgroundSize: "cover",

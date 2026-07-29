@@ -1,7 +1,8 @@
 "use client";
-
+// This client component acts as the main document shell.
+// It receives a preloaded Convex query result, reads the actual document data,
+// and composes the collaboration room, top navigation, toolbar, and editor UI.
 import { Preloaded, usePreloadedQuery } from "convex/react";
-
 import { Room } from "./room";
 import { Editor } from "./editor";
 import { Navbar } from "./navbar";
@@ -12,9 +13,19 @@ interface DocumentProps {
   preloadedDocument: Preloaded<typeof api.documents.getById>;
 };
 
+/**
+ * @param preloadedDocument - preloaded document query 
+ * @returns JSX.Element
+ * @description
+ * - usePreloadedQuery - retrieves the data from the preloaded query(preloadedDocument)
+ * - Room - provides room context for collaboration
+ * - Navbar - displays document title and collaboration information
+ * - Toolbar - provides tools for document editing
+ * - Editor - displays and edits document content
+ */
 export const Document = ({ preloadedDocument }: DocumentProps) => {
   const document = usePreloadedQuery(preloadedDocument);
-
+  console.log("InsideSheet | document.tsx | document: ", document, " (fetched this using usePreloadedQuery)")
   return (
     <Room>
       <div className="min-h-screen bg-[#FAFBFD]">
@@ -23,7 +34,7 @@ export const Document = ({ preloadedDocument }: DocumentProps) => {
           <Toolbar />
         </div>
         <div className="pt-[114px] print:pt-0">
-          <Editor />
+          <Editor initialContent={document.initialContent} />
         </div>
       </div>
     </Room>

@@ -5,6 +5,11 @@ import { AlertTriangleIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
+/** [explainMore]
+ * Next.js error boundary rendered when an unhandled exception occurs in a route segment.
+ * `reset` re-renders the segment without a full page reload; navigation to "/" provides
+ * an escape hatch if the error is unrecoverable.
+ */
 const ErrorPage = ({
   error,
   reset

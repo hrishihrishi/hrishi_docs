@@ -7,8 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSearchParam } from "@/hooks/use-search-param";
 
+/**
+ * Controlled search bar that keeps local input state separate from the URL query param.
+ * The URL param (`search`) only updates on form submit to avoid excessive re-fetches while typing.
+ */
 export const SearchInput = () => {
   const [search, setSearch] = useSearchParam();
+  // Local value tracks the input; `search` is the committed URL param.
   const [value, setValue] = useState(search);
 
   const inputRef = useRef<HTMLInputElement>(null);

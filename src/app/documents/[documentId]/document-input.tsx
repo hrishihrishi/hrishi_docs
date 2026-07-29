@@ -1,11 +1,12 @@
+// This component renders the editable document title field.
+// It keeps the title in local React state, debounces updates to Convex,
+// and shows connection status indicators so the user can see whether sync is healthy.
 import { toast } from "sonner";
 import { useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { BsCloudCheck, BsCloudSlash } from "react-icons/bs";
 import { useStatus } from "@liveblocks/react";
-
 import { useDebounce } from "@/hooks/use-debounce";
-
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { LoaderIcon } from "lucide-react";
@@ -85,8 +86,14 @@ export const DocumentInput = ({ title, id }: DocumentInputProps) => {
           {title}
         </span>
       )}
+      
+      {/* Show error icon if disconnected */}
       {showError && <BsCloudSlash className="size-4" />}
+      
+      {/* Show checkmark if connected */}
       {!showError && !showLoader && <BsCloudCheck className="size-4" />}
+      
+      {/* Show loader if syncing */}
       {showLoader && <LoaderIcon className="size-4 animate-spin text-muted-foreground" />}
     </div>
   )

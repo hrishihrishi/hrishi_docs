@@ -2,9 +2,7 @@ import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { SiGoogledocs } from "react-icons/si";
 import { Building2Icon, CircleUserIcon } from "lucide-react";
-
 import { TableCell, TableRow } from "@/components/ui/table";
-
 import { DocumentMenu } from "./document-menu";
 import { Doc } from "../../../convex/_generated/dataModel";
 
@@ -12,6 +10,10 @@ interface DocumentRowProps {
   document: Doc<"documents">;
 };
 
+/**
+ * A single row in the documents table. Entire row is clickable to open the document;
+ * the context menu is stopped from bubbling so it doesn't trigger row navigation.
+ */
 export const DocumentRow = ({ document }: DocumentRowProps) => {
   const router = useRouter();
 
@@ -26,6 +28,7 @@ export const DocumentRow = ({ document }: DocumentRowProps) => {
       <TableCell className="font-medium md:w-[45%]">
         {document.title}
       </TableCell>
+      {/* Show org vs. personal icon to visually distinguish sharing scope */}
       <TableCell className="text-muted-foreground hidden md:flex items-center gap-2">
         {document.organizationId 
           ? <Building2Icon className="size-4" /> 
@@ -40,6 +43,7 @@ export const DocumentRow = ({ document }: DocumentRowProps) => {
         <DocumentMenu
           documentId={document._id}
           title={document.title}
+          // Checkout app/documents/[documentId]/document.tsx 
           onNewTab={() => window.open(`/documents/${document._id}`, "_blank")}
         />
       </TableCell>

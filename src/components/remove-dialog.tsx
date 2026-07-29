@@ -1,9 +1,7 @@
 "use client";
-
 import { toast } from "sonner";
 import { useState } from "react";
 import { useMutation } from "convex/react";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,7 +13,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { useRouter } from "next/navigation";
@@ -25,6 +22,12 @@ interface RemoveDialogProps {
   children: React.ReactNode;
 };
 
+/**
+ * Confirmation dialog that permanently deletes a document.
+ * Navigates to "/" after deletion because the current document no longer exists.
+ * stopPropagation on the AlertDialogContent prevents the click from reaching the
+ * parent document row and triggering navigation while the dialog is open.
+ */
 export const RemoveDialog = ({ documentId, children }: RemoveDialogProps) => {
   const router = useRouter();
   const remove = useMutation(api.documents.removeById);

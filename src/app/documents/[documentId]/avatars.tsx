@@ -1,5 +1,7 @@
 "use client";
-
+// This component displays the presence avatars of other collaborators in the room.
+// It uses Liveblocks presence hooks to show who is currently active and keeps
+// the UI lightweight by rendering a fallback until the collaboration data is ready.
 import { ClientSideSuspense } from "@liveblocks/react";
 import { useOthers, useSelf } from "@liveblocks/react/suspense";
 

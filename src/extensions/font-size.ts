@@ -1,6 +1,10 @@
 import { Extension } from "@tiptap/react";
 import "@tiptap/extension-text-style";
 
+/**
+ * Augments Tiptap's command registry so TypeScript knows about
+ * `setFontSize` and `unsetFontSize` without needing a custom editor type.
+ */
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     fontSize: {
@@ -46,6 +50,8 @@ export const FontSizeExtension = Extension.create({
           .setMark("textStyle", { fontSize })
           .run()
       },
+      // Setting fontSize to null then calling removeEmptyTextStyle cleans up
+      // the <span> wrapper when no other text-style attributes remain.
       unsetFontSize: () => ({ chain }) => {
         return chain()
           .setMark("textStyle", { fontSize: null })

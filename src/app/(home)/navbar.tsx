@@ -1,10 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
-
 import { SearchInput } from "./search-input";
 import { Organization } from "@clerk/nextjs/server";
 
+/**
+ * Top navigation bar for the home page.
+ * OrganizationSwitcher redirects back to "/" after any org change to avoid
+ * showing documents from a stale org context.
+ */
 export const Navbar = () => {
   return (
     <nav className="flex items-center justify-between h-full w-full">

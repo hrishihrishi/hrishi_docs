@@ -1,8 +1,14 @@
+// [explainMore] - full
+
 import { ConvexError, v } from "convex/values";
 import { paginationOptsValidator } from "convex/server";
+import { mutation, query } from "./_generated/server"; 
 
-import { mutation, query } from "./_generated/server";
-
+/**
+ * Resolves document names for a batch of IDs.
+ * Returns a placeholder name for deleted documents so Liveblocks room info
+ * can still display something meaningful in the UI.
+ */
 export const getByIds = query({
   args: { ids: v.array(v.id("documents")) },
   handler: async (ctx, { ids }) => {
@@ -22,6 +28,11 @@ export const getByIds = query({
   },
 });
 
+/**
+ * Creates a new document owned by the authenticated user.
+ * Attaches an organizationId when the Clerk JWT includes an org context
+ * so the document is visible to all org members.
+ */
 export const create = mutation({
   args: { title: v.optional(v.string()), initialContent: v.optional(v.string()) },
   handler: async (ctx, args) => {
@@ -31,6 +42,7 @@ export const create = mutation({
       throw new ConvexError("Unathorized");
     }
 
+    // org_id is only present in the JWT when the user is acting under an org context.
     const organizationId = (user.organization_id ?? undefined) as
     | string
     | undefined;
@@ -44,6 +56,11 @@ export const create = mutation({
   },
 });
 
+/**
+ * Paginated document list, filtered by search term and scoped to the
+ * user's current org or personal workspace.
+ * Priority order: org search > personal search > all org docs > all personal docs.
+ */
 export const get = query({
   args: { paginationOpts: paginationOptsValidator, search: v.optional(v.string()) },
   handler: async (ctx, { search, paginationOpts }) => {
@@ -93,6 +110,11 @@ export const get = query({
   },
 });
 
+/**
+ * Deletes a document by ID.
+ * Enforces that only the owner or a member of the document's organization
+ * can delete it, preventing cross-user/cross-org deletions.
+ */
 export const removeById = mutation({
   args: { id: v.id("documents") },
   handler: async (ctx, args) => {
@@ -124,6 +146,10 @@ export const removeById = mutation({
   },
 });
 
+/**
+ * Updates a document's title.
+ * Applies the same ownership/org-membership authorization check as `removeById`.
+ */
 export const updateById = mutation({
   args: { id: v.id("documents"), title: v.string() },
   handler: async (ctx, args) => {
@@ -155,6 +181,11 @@ export const updateById = mutation({
   },
 });
 
+/**
+ * Fetches a single document by ID without auth checks.
+ * Used by the Liveblocks auth route (server-side) which performs its own
+ * ownership validation before granting room access.
+ */
 export const getById = query({
   args: { id: v.id("documents") },
   handler: async (ctx, { id }) => {

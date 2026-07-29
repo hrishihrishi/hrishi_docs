@@ -1,6 +1,5 @@
 import { LoaderIcon } from "lucide-react";
 import { PaginationStatus } from "convex/react";
-
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -10,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { DocumentRow } from "./document-row";
 import { Doc } from "../../../convex/_generated/dataModel";
 
@@ -20,6 +18,11 @@ interface DocumentsTableProps {
   status: PaginationStatus;
 };
 
+/**
+ * Paginated table of user documents.
+ * When `documents` is undefined, the Convex query is still loading.
+ * The "Load more" button is disabled unless there are additional pages to fetch.
+ */
 export const DocumentsTable = ({
   documents,
   loadMore,

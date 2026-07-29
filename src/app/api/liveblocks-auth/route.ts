@@ -1,7 +1,6 @@
 import { Liveblocks } from "@liveblocks/node";
 import { ConvexHttpClient } from "convex/browser";
 import { auth, currentUser } from "@clerk/nextjs/server";
-
 import { api } from "../../../../convex/_generated/api";
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
@@ -12,27 +11,34 @@ const liveblocks = new Liveblocks({
 export async function POST(req: Request) {
   const { sessionClaims } = await auth();
   if (!sessionClaims) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response("Session claims unauthorized [from livebloacks auth]", { status: 401 });
   }
 
   const user = await currentUser();
   if (!user) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response("This User not found [from livebloacks auth]", { status: 401 });
   }
 
   const { room } = await req.json();
   const document = await convex.query(api.documents.getById, { id: room });
 
   if (!document) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response("Document not found [from livebloacks auth]", { status: 401 });
   }
-
+  
   const isOwner = document.ownerId === user.id;
-  const isOrganizationMember = 
-    !!(document.organizationId && document.organizationId === sessionClaims.org_id);
+  const isOrganizationMember = !!(document.organizationId && document.organizationId === sessionClaims.o.id);
 
+  console.log("===========================================")
+  console.log("liveblocks/route.ts | document: ",document)
+  console.log("liveblocks/route.ts | sessionClaims.o.id     : ",sessionClaims.o.id)
+  console.log("liveblocks/route.ts | document.organizationId: ",document.organizationId)
+  console.log("liveblocks/route.ts | isOwner: ",isOwner)
+  console.log("liveblocks/route.ts | isOrgMember: ", isOrganizationMember)
+  console.log("===========================================")
+  
   if (!isOwner && !isOrganizationMember) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response("Is not owner nor organization member [from livebloacks auth]", { status: 401 });
   }
 
   const session = liveblocks.prepareSession(user.id, {

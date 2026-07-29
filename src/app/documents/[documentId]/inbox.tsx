@@ -1,5 +1,7 @@
 "use client";
-
+// This component renders the collaboration inbox dropdown.
+// It surfaces Liveblocks notifications such as comments, mentions, and other room events
+// so the user can quickly review recent activity without leaving the document view.
 import { BellIcon } from "lucide-react";
 import { ClientSideSuspense } from "@liveblocks/react";
 import { useInboxNotifications } from "@liveblocks/react/suspense";

@@ -1,5 +1,7 @@
 "use client";
-
+// This component builds the rich-text toolbar for the editor.
+// It groups formatting actions into reusable buttons and dropdowns so users can
+// style content, insert media, manage links, and trigger collaborative comments.
 import { useState } from "react";
 import { type ColorResult, SketchPicker } from "react-color";
 import { type Level } from "@tiptap/extension-heading";

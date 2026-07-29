@@ -1,9 +1,7 @@
 "use client";
-
 import { useState } from "react";
 import { toast } from "sonner";
 import { useMutation } from "convex/react";
-
 import {
   Dialog,
   DialogContent,
@@ -24,6 +22,11 @@ interface RenameDialogProps {
   children: React.ReactNode;
 };
 
+/** [explainMore]
+ * Dialog for renaming a document in-place.
+ * Manages its own open/close state so the trigger (a dropdown item) can call
+ * e.preventDefault() on select without losing control of dialog visibility.
+ */
 export const RenameDialog = ({ documentId, initialTitle, children }: RenameDialogProps) => {
   const update = useMutation(api.documents.updateById);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -35,6 +38,7 @@ export const RenameDialog = ({ documentId, initialTitle, children }: RenameDialo
     e.preventDefault();
     setIsUpdating(true);
 
+    // Trim whitespace and fall back to "Untitled" so the title is never empty.
     update({ id: documentId, title: title.trim() || "Untitled" })
       .catch(() => toast.error("Something went wrong"))
       .then(() => toast.success("Document updated"))

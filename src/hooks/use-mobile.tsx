@@ -1,7 +1,12 @@
 import * as React from "react"
 
+// Matches Tailwind's `md` breakpoint used throughout the app.
 const MOBILE_BREAKPOINT = 768
 
+/**
+ * Returns `true` when the viewport width is below the mobile breakpoint.
+ * Uses a MediaQueryList listener so the value updates reactively on resize.
+ */
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
 

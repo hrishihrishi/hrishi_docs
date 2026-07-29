@@ -1,5 +1,9 @@
 import { Extension } from "@tiptap/react";
 
+/**
+ * Augments Tiptap's command registry so TypeScript knows about
+ * `setLineHeight` and `unsetLineHeight` without needing a custom editor type.
+ */
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     lineHeight: {
@@ -45,6 +49,8 @@ export const LineHeightExtension = Extension.create({
         tr = tr.setSelection(selection);
 
         const { from, to } = selection;
+        // Walk every node in the selection and patch only block nodes
+        // (paragraphs, headings) that support the lineHeight attribute.
         state.doc.nodesBetween(from, to, (node, pos) => {
           if (this.options.types.includes(node.type.name)) {
             tr = tr.setNodeMarkup(pos, undefined, {
@@ -62,6 +68,8 @@ export const LineHeightExtension = Extension.create({
         tr = tr.setSelection(selection);
 
         const { from, to } = selection;
+        // Restore the configured default rather than removing the attribute,
+        // so elements always have an explicit line-height value.
         state.doc.nodesBetween(from, to, (node, pos) => {
           if (this.options.types.includes(node.type.name)) {
             tr = tr.setNodeMarkup(pos, undefined, {

@@ -1,5 +1,7 @@
 "use client";
-
+// This component is the top navigation shell for the document view.
+// It provides the document title editor, file operations, formatting menus,
+// and collaboration controls that surround the editor experience.
 import Link from "next/link";
 import Image from "next/image"
 import { toast } from "sonner";

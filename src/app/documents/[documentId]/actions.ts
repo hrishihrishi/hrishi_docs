@@ -1,5 +1,7 @@
 "use server";
-
+// Server-side helpers for document and user lookup.
+// These actions are used by the collaboration UI to resolve room metadata and
+// to populate the user list that powers mention suggestions and presence details.
 import { ConvexHttpClient } from "convex/browser";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 

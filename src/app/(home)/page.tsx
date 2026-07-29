@@ -1,15 +1,17 @@
 "use client";
-
 import { usePaginatedQuery } from "convex/react";
-
 import { useSearchParam } from "@/hooks/use-search-param";
-
 import { Navbar } from "./navbar";
 import { DocumentsTable } from "./documents-table";
 import { TemplatesGallery } from "./templates-gallery";
 import { api } from "../../../convex/_generated/api";
 
+/**
+* This page combines Navbar, TemplatesGallery and DocumentsTable.
+* Read the "search" URL param so query-driven filtering survives page refresh. [explainMore]
+*/
 const Home = () => {
+  // Read the "search" URL param so query-driven filtering survives page refresh. [explainMore]
   const [search] = useSearchParam();
   const { 
     results, 
