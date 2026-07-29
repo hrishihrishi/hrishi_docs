@@ -100,7 +100,7 @@ export const Editor = ({ initialContent }: EditorProps) => {
       TextStyle,
       Underline,
       Image,
-      ImageResize,
+      ImageResize,  // FIXME: need to confirm this extension.
       Table,
       TableCell,
       TableHeader,

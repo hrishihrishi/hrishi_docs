@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { UserButton, OrganizationSwitcher } from "@clerk/nextjs";
 import { SearchInput } from "./search-input";
-import { Organization } from "@clerk/nextjs/server";
 
 /**
  * Top navigation bar for the home page.

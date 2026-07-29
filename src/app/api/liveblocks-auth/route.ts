@@ -27,11 +27,11 @@ export async function POST(req: Request) {
   }
   
   const isOwner = document.ownerId === user.id;
-  const isOrganizationMember = !!(document.organizationId && document.organizationId === sessionClaims.o.id);
+  const isOrganizationMember = !!(document.organizationId && document.organizationId === (sessionClaims.o as { id: string })?.id);
 
   console.log("===========================================")
   console.log("liveblocks/route.ts | document: ",document)
-  console.log("liveblocks/route.ts | sessionClaims.o.id     : ",sessionClaims.o.id)
+  console.log("liveblocks/route.ts | sessionClaims.o.id     : ",(sessionClaims.o as { id: string })?.id)
   console.log("liveblocks/route.ts | document.organizationId: ",document.organizationId)
   console.log("liveblocks/route.ts | isOwner: ",isOwner)
   console.log("liveblocks/route.ts | isOrgMember: ", isOrganizationMember)
@@ -41,10 +41,16 @@ export async function POST(req: Request) {
     return new Response("Is not owner nor organization member [from livebloacks auth]", { status: 401 });
   }
 
+  const name = user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous";
+  const nameToNumber = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const hue = Math.abs(nameToNumber) % 360;
+  const color = `hsl(${hue}, 80%, 60%)`;
+
   const session = liveblocks.prepareSession(user.id, {
     userInfo: {
       name: user.fullName ?? user.primaryEmailAddress?.emailAddress ?? "Anonymous",
       avatar: user.imageUrl,
+      color,
     },
   });
   session.allow(room, session.FULL_ACCESS);
